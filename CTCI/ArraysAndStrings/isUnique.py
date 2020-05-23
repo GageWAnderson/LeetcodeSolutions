@@ -37,3 +37,17 @@ def existsSubstring(s,b): #O(N) time, O(1) space (in-place)
 if __name__ == "__main__":
     Sol = existsSubstring("helloworld","helloworld")
     print(Sol)
+
+
+#Notes on the solution:
+
+#ASK THE INTERVIEWER: is the string Unicode or ASCII
+#Unicode has 143,859 characters
+
+#OPTIMIZATION: return false as soon as the number of characters in the string
+#Is greater than the alphabet size (256 for ASCII)
+
+#O(1) Space?
+#1. Brute force, compare every character to every other character O(n^2)
+#2. If we can modify the input (destructive), we could sort the string IN PLACE
+#   Then, linearly chech if neighboring characters are identical O(nlogn)

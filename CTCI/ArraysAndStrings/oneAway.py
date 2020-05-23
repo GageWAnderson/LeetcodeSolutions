@@ -13,14 +13,14 @@ def oneAway(s1,s2):
         m,n = n,m
         s1,s2 = s2,s1
 
-    if m == n:
+    if m == n: #Check the replacement step
         numDiff = 0
         for i in range(m):
             if numDiff > 1: return False
             if s1[i] != s2[i]: numDiff += 1
         return True #Return true on zero edits as well
 
-    elif m == n - 1:
+    elif m == n - 1: #Check the insertion/removal steps
         if s2[0] != s1[0]: return s1 == s2[1:n]
         elif s2[n-1] != s1[m-1]: return s1 == s2[0:n-1]
         else:
@@ -37,3 +37,11 @@ if __name__ == "__main__":
     print(oneAway("pales","pale"))
     print(oneAway("pale","bale"))
     print(oneAway("pale","bake"))
+
+#Solution notes:
+#This is one of those problems where it is helpful to think of the meaning of each
+#Operation
+
+#Replacement: Means that strings are the same length and differ in one place
+#Insertion: Strings are identical, except for a shift at some point in the strings
+#Removal: The inverse of insertion

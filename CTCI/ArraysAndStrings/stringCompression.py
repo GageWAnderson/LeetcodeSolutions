@@ -27,3 +27,7 @@ if __name__ == "__main__":
     print(stringCompression("AggarwalSadikuIXYou"))
 
 #This string builder array seems like a common plan to minimize concatenation costs...
+#Solution notes:
+
+#String concatenation operates in O(n^2) time, so we should use string-builder data structure
+

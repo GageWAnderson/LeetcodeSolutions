@@ -10,3 +10,8 @@ def stringRotation(s1,s2):
         if s1[i] != s2[i]: point = i
     s3 = s1[i:m] + s1[0:i]
     return isSubstring(s2,s3)
+
+#Check if there is a way to split s1 into x and y such that xy = s1 and yx = s2
+
+#s2 will always be a substring of s1s1 !!!!
+#With this insight, you only need to call isSubstring once!

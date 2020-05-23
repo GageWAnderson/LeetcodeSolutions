@@ -8,6 +8,7 @@
 
 #Then loop through dict A and make sure that "letter" is in dict B and that "letter":freq
 #Is the same for B For every letter
+from collections import Counter #This builtin is VERY helpful for problems like this!
 def makeFreqDict(s): #O(S)
     res = dict()
     for char in s:
@@ -33,3 +34,9 @@ if __name__ == "__main__":
     s1 = "hello"
     s2 = "olleh"
     print(checkPermutation(s1,s2))
+
+#ASK THE INTERVIEWER: Are the permutations case-sensitive, are whitespaces significant?
+
+#NOTE this is a really good question for collections.Counter to keep track
+#Of of frequently each character is appearing
+
