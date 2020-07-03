@@ -1,8 +1,9 @@
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+        
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode: #This will loop forever if given circular linked lists, use tortoise-hare to check
         if l1 is None and l2 is None: return None #clean up the input
