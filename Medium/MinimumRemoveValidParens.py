@@ -1,5 +1,6 @@
 #Alberto gave me the optimal solution, however I was on track
 #For the less-optimal solution before that
+from collections import defaultdict
 class Solution:
     def minRemoveToMakeValid(self, s: str) -> str:
         #Use a string-builder to build up the answer
@@ -7,7 +8,7 @@ class Solution:
         removed = set()
         parenCount = 0
         unclosed = []
-        
+        d = defaultdict()
         for i in range(len(s)):
             if s[i] == "(":
                 unclosed.append(i)
