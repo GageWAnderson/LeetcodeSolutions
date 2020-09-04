@@ -1,71 +1,101 @@
 #Keep track of the path length so that when you find a path to the target,
 #You only ever consider paths that are less than or equal to that target
-class Node:
-    def __init__(self,val="",level=0):
-        self.val = val
-        self.level = level
-    
-    def __repr__(self):
-        return f"val = {self.val}, level = {self.level}"
 
-class Solution:
+#BFS, but with paths not words
+#BFS gets the shortest paths in unweighted, undirected graphs
+#Update the maximum path length whenever you find a solution
+#At the end, trim all the solutions greater than the maximum path length
+#No duplicates -> no self-loops
+
+#This currently isn't backtracking properly -> easier to implement with recursive DFS
+from collections import deque
+class SolutionVerySlow: #O((big_constant)*ns)
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
-        queue = deque()
-        queue.append([Node(beginWord,1)])
-        wordSet = set(wordList) #O(n)
+        wordSet = set(wordList)
+        maxLen = inf
         seen = set()
         res = []
-        maxLevel = inf
         
-        while queue: #O(E + V)
-            currPath = queue.popleft()
-            currNode = currPath[-1]
-
-            if currNode.val == endWord:
+        def getNbors(word):
+            chars = "abcdefghijklmnopqrstuvwxyz"
+            ans = []
+            for i in range(len(word)):
+                for c in chars:
+                    newWord = (word[:i] + c + word[i+1:])
+                    if newWord in wordSet and newWord not in seen:
+                        ans.append(newWord)
+            return ans
+        
+        #Now, do BFS to find the shortest paths, cap search at maxLen
+        q = deque()
+        q.append([beginWord])
+        while q:
+            currPath = q.popleft()
+            seen.add(currPath[-1])
+            if currPath[-1] == endWord:
+                maxLen = min(maxLen,len(currPath))
                 res.append(currPath)
-                maxLevel = currNode.level
+                seen.remove(currPath[-1])
+            elif len(currPath) >= maxLen:
                 continue
-            
-            if currNode.level < maxLevel and currNode not in seen:
-                seen.add(currNode.val)
-                
-                nbors = self.getNbors(currNode,wordSet,seen) #O(26s)
-                for nbor in nbors:
+            else:
+                for nbor in getNbors(currPath[-1]):
                     newPath = currPath + [nbor]
-                    queue.append(newPath)
-        return self.getShortestPaths(self.getPaths(res))
+                    q.append(newPath)
+                    
+        print(maxLen)
+        return filter(lambda L:len(L) <= maxLen,res)#Function returns true to be kept in the result
     
-    def getShortestPaths(self,pathList):
-        minLen = inf
+    #To clear the relation between backtracking and DFS, we can say backtracking is a complete search technique and DFS is an ideal way to implement it.
+
+
+    #BFS, but with paths not words
+#BFS gets the shortest paths in unweighted, undirected graphs
+#Update the maximum path length whenever you find a solution
+#At the end, trim all the solutions greater than the maximum path length
+
+#No duplicates -> no self-loops
+
+#This currently isn't backtracking properly -> easier to implement with recursive DFS
+from collections import deque, defaultdict
+class SolutionSlow: #O((smaller_constant)*ns)
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        wordSet = set(wordList)
+        maxLen = inf
+        seen = set()
         res = []
-        for path in pathList:
-            if len(path) < minLen:
-                minLen = len(path)
-        for path in pathList:
-            if len(path) == minLen:
-                res.append(path)
-        return res
-    
-    def getPaths(self,pathList):
-        ans = []
-        def getPath(L):
-            res = []
-            for node in L:
-                res.append(node.val)
-            return res
         
-        for path in pathList:
-            ans.append(getPath(path))
-        return ans
+        adjList = defaultdict(list)
+        for word in wordList: #O(ns)
+            for i in range(len(word)):
+                star = word[:i] + "*" + word[i+1:]
+                adjList[star].append(word)
+
+        def getNbors(word): #Constructing an adjacency list a priori removes a factor of 26 from the runtime
+            ans = []
+            for i in range(len(word)): #O(s), this mapping removes a const. factor of 26
+                star = word[:i] + "*" + word[i+1:]
+                for item in adjList[star]:
+                    if item != word and item not in seen: #Don't forget to check seen
+                        ans.append(item)
+            return ans
+        
+        #Now, do BFS to find the shortest paths, cap search at maxLen
+        q = deque()
+        q.append([beginWord])
+        while q:
+            currPath = q.popleft()
+            seen.add(currPath[-1])
+            if currPath[-1] == endWord:
+                maxLen = min(maxLen,len(currPath))
+                res.append(currPath)
+                seen.remove(currPath[-1])
+            elif len(currPath) >= maxLen:
+                continue
+            else:
+                for nbor in getNbors(currPath[-1]):
+                    newPath = currPath + [nbor]
+                    q.append(newPath)
+        return filter(lambda L:len(L) <= maxLen,res)#Function returns true to be kept in the result
     
-    def getNbors(self,vertex,wordSet,seen): #O(26*s)
-        res = []
-        for i in range(len(vertex.val)): #O(s)
-            for c in "abcdefghijklmnopqrstuvwxyz": #O(26)
-                newWord = vertex.val[:i] + c + vertex.val[i+1:]
-                if newWord not in seen and newWord in wordSet: #O(1)
-                    res.append(Node(newWord,vertex.level+1))
-        return res
-
-
-#https://medium.com/algorithms-and-leetcode/backtracking-e001561b9f28 (Backtracking with DFS)
+    #To clear the relation between backtracking and DFS, we can say backtracking is a complete search technique and DFS is an ideal way to implement it.
