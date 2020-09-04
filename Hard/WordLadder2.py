@@ -66,3 +66,6 @@ class Solution:
                 if newWord not in seen and newWord in wordSet: #O(1)
                     res.append(Node(newWord,vertex.level+1))
         return res
+
+
+#https://medium.com/algorithms-and-leetcode/backtracking-e001561b9f28 (Backtracking with DFS)
