@@ -37,8 +37,8 @@ class DFS:
         '''
 
         if depth == depth_limit: #end condition
-        ans.append(curr[::]) # use deepcopy because curr is tracking all partial solution, it eventually become []
-        return
+            ans.append(curr[::]) # use deepcopy because curr is tracking all partial solution, it eventually become []
+            return
     
         for i in range(n):
             if not used[i]:
