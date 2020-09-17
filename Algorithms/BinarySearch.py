@@ -1,6 +1,6 @@
 class BinarySearch:
     def binSearch(self,A,x):
-        n = len(A)
+        n = len(A)-1 #Don't forget the -1, common bug
         if n == 0:
             raise Exception("Array must contain some elements")
 
