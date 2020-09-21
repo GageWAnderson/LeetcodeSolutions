@@ -23,20 +23,16 @@ class Solution: #O(nlog(n)), this problem can also be solved via a graph connect
             curr = next
         return res
 
-class SolutionElegant: #Same type of solution, just more succinct
+class SolutionBest:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-
-        intervals.sort(key=lambda x: x[0])
-
+        intervals.sort(key = lambda x : x[0])
+        
         merged = []
         for interval in intervals:
-            # if the list of merged intervals is empty or if the current
-            # interval does not overlap with the previous, simply append it.
-            if not merged or merged[-1][1] < interval[0]:
+            if not merged:
                 merged.append(interval)
+            elif merged[-1][1] >= interval[0]:
+                merged[-1][1] = max(interval[1],merged[-1][1])
             else:
-            # otherwise, there is overlap, so we merge the current and previous
-            # intervals.
-                merged[-1][1] = max(merged[-1][1], interval[1])
-
+                merged.append(interval)
         return merged
