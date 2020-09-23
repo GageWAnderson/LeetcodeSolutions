@@ -1,4 +1,9 @@
 #Approach is left,right product lists
+#This is a divide/conquer problem that I didn't get
+#Need to look for divide/conquer solutions in addition to 
+#The data-structure brainstorm technique
+
+#Note that this solution will not work if there are any zeros in the array.
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         if len(nums) <= 1: return nums
