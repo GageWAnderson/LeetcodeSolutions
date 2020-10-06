@@ -20,3 +20,25 @@ class Solution: #O(n) time and space, uses a hash set to track sums seen so far
             prev_sum = curr_sum
         
         return res
+
+#2 pointers, move up the left pointer when you go over k and increment res by 1
+#That solution only works when we don't have any negative values allowed
+#Hash map solution for seen sums works for arrays with all values
+
+from collections import defaultdict
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        seen_sums = defaultdict(int)
+        seen_sums[0] = 1
+        cum_sum = 0
+        res = 0
+        for i in range(len(nums)):
+            cum_sum += nums[i]
+            if seen_sums[cum_sum - k] > 0:
+                res += seen_sums[cum_sum-k]
+            seen_sums[cum_sum] += 1
+            
+        return res
+
+
+#This is the exact type of problem that you should jump to hashmap usage

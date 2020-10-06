@@ -65,17 +65,46 @@ class Graph():
   
         self.printSolution(dist) 
   
-# Driver program 
-g = Graph(9) 
-g.graph = [[0, 4, 0, 0, 0, 0, 0, 8, 0], 
-        [4, 0, 8, 0, 0, 0, 0, 11, 0], 
-        [0, 8, 0, 7, 0, 4, 0, 0, 2], 
-        [0, 0, 7, 0, 9, 14, 0, 0, 0], 
-        [0, 0, 0, 9, 0, 10, 0, 0, 0], 
-        [0, 0, 4, 14, 10, 0, 2, 0, 0], 
-        [0, 0, 0, 0, 0, 2, 0, 1, 6], 
-        [8, 11, 0, 0, 0, 0, 1, 0, 7], 
-        [0, 0, 2, 0, 0, 0, 6, 7, 0] 
-        ]; 
-  
-g.dijkstra(0); 
+
+#Algorithm Pseudocode:
+"""
+Let distance of start vertex from start vertex = 0
+Set all other distances to sys.maxint
+
+Repeat:
+    Visit the unvisited vertex with the smallest known distance from the start O(V)
+    For the current vertex, examine its unvisited neighbours
+
+    For the current vertex, calculate distance of each nbor from the start vertex
+    If the calculated distance of a vertex is less than the known distance, update the shortest distance
+    Update the previous vertex for each of the updated distances
+    Add the current vertex to the set of visited verticies
+Until All visited
+"""
+
+class MyDijkstras:
+    def minDist(self,dists):
+        min_index = -1
+        min_so_far = sys.maxint
+        for i in range(len(dists)):
+            if dists[i] < min_so_far:
+                min_so_far = dists[i]
+                min_index = i
+        return min_index
+        
+    def Dijkstra(self,Graph,start,target): #Works for Adjacency matrix Graph implementation
+        unvisited = [v for v in Graph]
+        distances = [sys.maxint for v in Graph]
+        distances[start] = 0
+        visited = [False for v in Graph]
+
+        for v in Graph: #O(V), need to look at all verticies
+            u = self.minDist(distances) #O(V), linear search
+            if u == target:
+                return distances[u]
+            visited[u] = True
+
+            for v in Graph:
+                if Graph[u][v] > 0 and visited[v] == False and distances[v] > distances[u] + Graph[u][v]:
+                    distances[v] = distances[u] + Graph[u][v]
+        return distances[target]

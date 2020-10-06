@@ -32,3 +32,42 @@ class Solution: #O(n), however uses naive DFS and is destructive of the islands-
                     numIslands += 1
         
         return numIslands #Make sure to return at the end!
+
+
+class SolutionNonDestructive:
+    #BFS, non-destructive of input
+    def numIslands(self, grid: List[List[str]]) -> int:
+        num_islands = 0
+        moves = [(-1,0),(1,0),(0,-1),(0,1)] #Up,down,left,right
+        seen = set()
+        
+        def is_safe(x,y):
+            m,n = len(grid),len(grid[0])
+            return x >= 0 and x < m and y >= 0 and y < n
+        
+        def getNbors(x,y):
+            res = []
+            for move in moves:
+                new_x,new_y = x+move[0],y+move[1]
+                if (new_x,new_y) not in seen and is_safe(new_x,new_y) and grid[new_x][new_y] == "1":
+                    res.append((new_x,new_y))
+            return res
+        
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                print(seen)
+                if (i,j) in seen:
+                    continue
+                if grid[i][j] == "1":
+                    q = deque()
+                    q.append((i,j))
+                    num_islands += 1
+                    while q:
+                        curr_node = q.popleft()
+                        x,y = curr_node[0],curr_node[1]
+                        seen.add((x,y))
+                        nbors = getNbors(x,y)
+                        for nbor in nbors:
+                            q.append(nbor)
+                            
+        return num_islands
