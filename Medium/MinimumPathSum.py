@@ -140,3 +140,22 @@ class SolutionDPBasic: #O(mn), O(mn) space, can reduce space requirements
                 else:
                     dpGrid[i][j] = grid[i][j] + min(dpGrid[i+1][j], dpGrid[i][j+1])
         return dpGrid[0][0]
+
+
+#EZ DP solution when coming back to the problem
+#This is memory-optimal since you can be destructive of the input
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        if m == 0: return 0
+        n = len(grid[0])
+        
+        for j in range(1,n):
+            grid[0][j] = grid[0][j-1] + grid[0][j]
+        for i in range(1,m):
+            grid[i][0] = grid[i-1][0] + grid[i][0]
+        for i in range(1,m):
+            for j in range(1,n):
+                grid[i][j] = min(grid[i-1][j],grid[i][j-1]) + grid[i][j]
+                
+        return grid[-1][-1]

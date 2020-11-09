@@ -23,3 +23,25 @@ class Solution:
             i += 1
         
         return volume
+
+#Month later, crush this in less than an hour on my first try!
+#Remembered that you need to use a stack, annoying to deal with edge-cases
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        decStack = []
+        res = 0
+        
+        for i,num in enumerate(height):
+            if not decStack or num < decStack[-1][0]:
+                decStack.append((num,i))
+            else:
+                while decStack and decStack[-1][0] <= num:
+                    h1,i1 = decStack.pop()
+                    if decStack:
+                        h0,i0 = decStack[-1]
+                        height = min(h0,num)-h1
+                        width = i - i0 - 1
+                        res += height*width
+                decStack.append((num,i))
+                
+        return res

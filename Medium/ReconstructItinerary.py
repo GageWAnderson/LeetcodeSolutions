@@ -43,3 +43,39 @@ class Solution:
         makeGraph()
         dfs("JFK",1)
         return self.output
+
+
+#REKT on first try, good stuff!
+from collections import defaultdict
+class Solution:
+    def makeGraph(self,tickets): 
+        graph = defaultdict(list)
+        for tick in tickets:
+            graph[tick[0]].append(tick[1])
+        for airport in graph:
+            graph[airport].sort() #Lexical sorting
+        return graph
+    
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        graph = self.makeGraph(tickets) #Adj. List
+        #print(graph)
+        max_depth = len(tickets) + 1
+        res = []
+        
+        def dfs(start,depth,res):
+            res.append(start)
+            #print(graph)
+            if depth >= max_depth:
+                return True #Found path
+            for i,nbor in enumerate(graph[start]):
+                if nbor[0] != "-": #If nbor not seen
+                    search_string = nbor
+                    graph[start][i] = "-" + nbor #Mark as seen
+                    if dfs(search_string,depth+1,res):
+                        return True
+                    graph[start][i] = graph[start][i][1:] #Nbor is no longer seen
+            res.pop()
+            return False
+        
+        dfs("JFK",1,res)
+        return res
