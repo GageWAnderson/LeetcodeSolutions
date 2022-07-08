@@ -29,11 +29,11 @@ class DFS:
 
     def dfs_backtracking(self,graph,n,used,depth_limit,depth,curr,ans):
         '''
-        Implement permutation of k items out  of n items
+        Implement permutation of k items out of n items
         depth: start from 0, and represent the depth of the search
         used: track what items are  in the partial solution from the set of n
         curr: the current partial solution
-        ans: collect all the valide solutions
+        ans: collect all the valid solutions
         '''
 
         if depth == depth_limit: #end condition

@@ -1,5 +1,5 @@
 class MergeSort:
-    #Merge, mergesort must be in-place
+    #Merge, mergesort must be in-place (stable sort, doesn't re-order initial order of otherwise equal elements)
     def _merge(self,arr : List[int], left : List[int], right : List[int]) -> None:
         if len(arr) > 1: #Base case do nothing
             #Since left,right are sorted, loops through both of them

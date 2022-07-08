@@ -9,6 +9,8 @@
 #Then loop through dict A and make sure that "letter" is in dict B and that "letter":freq
 #Is the same for B For every letter
 from collections import Counter #This builtin is VERY helpful for problems like this!
+from collections import OrderedDict
+
 def makeFreqDict(s): #O(S)
     res = dict()
     for char in s:

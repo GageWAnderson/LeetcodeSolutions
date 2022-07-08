@@ -5,7 +5,10 @@ class QuickSort:
     # array, and places all smaller (smaller than pivot) 
     # to left of pivot and all greater elements to right 
     # of pivot 
-    def partition(arr,low,high): 
+    def __init__(self):
+        pass
+
+    def partition(self,arr,low,high): 
         i = ( low-1 )         # index of smaller element 
         pivot = arr[high]     # pivot 
     
@@ -27,14 +30,21 @@ class QuickSort:
     # high  --> Ending index 
     
     # Function to do Quick sort 
-    def quickSort(arr,low,high): 
+    def quickSort(self,arr,low,high): 
         if low < high: 
     
             # pi is partitioning index, arr[p] is now 
             # at right place 
-            pi = partition(arr,low,high) 
+            pi = self.partition(arr,low,high) 
     
             # Separately sort elements before 
             # partition and after partition 
-            quickSort(arr, low, pi-1) 
-            quickSort(arr, pi+1, high) 
+            self.quickSort(arr, low, pi-1) 
+            self.quickSort(arr, pi+1, high) 
+
+if __name__ == "__main__":
+    qs = QuickSort()
+    arr = [12,45,5,6,43256,6,54,54,6,7,435,6,34,5435,7,53245,5,453]
+    print(arr)
+    qs.quickSort(arr,0,len(arr)-1)
+    print(arr)

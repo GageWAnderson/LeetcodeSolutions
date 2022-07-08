@@ -1,5 +1,6 @@
 #Topological Sort provides a linear ordering of verticies such that:
 #For every directed edge uv, u comes before v in the ordering
+#Note, Topsort only works for DAGs
 
 from collections import defaultdict
 class Graph: 
