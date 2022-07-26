@@ -1,4 +1,5 @@
 from random import choice
+from collections import defaultdict
 
 class PermuationsOfString:
 
@@ -8,6 +9,9 @@ class PermuationsOfString:
             self.letters = inputString
         else:
             self.letters = "".join(choice(chars) for i in range(strLen))
+    
+    def __str__(self) -> str:
+        return self.letters
 
     def getPermuations(self):
         if not self.letters:
@@ -15,27 +19,29 @@ class PermuationsOfString:
         if len(self.letters) < 2:
             return [self.letters]
 
-        ans = []
-        lettersRemaining = set()
+        ans = set()
+        lettersRemaining = defaultdict(int)
         for char in self.letters:
-            lettersRemaining.add(char)
+            lettersRemaining[char] += 1
 
         def helper(currString):
             if len(currString) == len(self.letters):
-                ans.append("".join(currString))
+                ans.add("".join(currString))
             else:
                 for char in lettersRemaining:
-                    currString.append(char)
-                    lettersRemaining.remove(char)
-                    helper(currString)
-                    lettersRemaining.add(char)
-                    currString.pop()
+                    if lettersRemaining[char] > 0:
+                        currString.append(char)
+                        lettersRemaining[char] -= 1
+                        helper(currString)
+                        lettersRemaining[char] += 1
+                        currString.pop()
         
         helper([])
-        return ans
+        return list(ans)
 
 if __name__ == "__main__":
     numTests = 10
     for test in range(numTests):
         string = PermuationsOfString()
+        print(f"string = {string}")
         print(string.getPermuations())
