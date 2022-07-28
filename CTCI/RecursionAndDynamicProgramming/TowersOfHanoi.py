@@ -14,9 +14,6 @@ class TowersOfHanoi:
                 helper(n-1, start, destination, buffer)
                 destination.append(start.pop())
                 helper(n-1, buffer, start, destination)
-                print(f"startTower = {self.startTower}")
-                print(f"middleTower = {self.middleTower}")
-                print(f"endTower = {self.endTower}")
         
         helper(len(self.startTower), self.startTower, self.middleTower, self.endTower)
         return self.endTower
