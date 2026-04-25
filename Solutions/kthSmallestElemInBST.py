@@ -58,3 +58,27 @@ class SolutionIterative:
                 return cur.val
             
             cur = cur.right # Repeat for the right node if not found
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        n = [0]
+
+        def inorder_traversal(node):
+            if not node:
+                return None
+            
+            left = inorder_traversal(node.left)
+            if left is not None:
+                return left
+            n[0] += 1
+            if n[0] == k:
+                return node.val
+            return inorder_traversal(node.right)
+        
+        return inorder_traversal(root)

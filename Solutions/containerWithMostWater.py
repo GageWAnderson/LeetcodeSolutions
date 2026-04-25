@@ -31,3 +31,19 @@ class Solution:
                 r -= 1
         
         return maxWater
+
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        max_so_far = 0
+
+        left,right = 0, len(height) - 1
+
+        while left < right:
+            volume = (right - left) * min(height[right], height[left])
+            max_so_far = max(max_so_far, volume)
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+        
+        return max_so_far

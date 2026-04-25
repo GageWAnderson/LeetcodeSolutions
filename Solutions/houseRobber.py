@@ -28,3 +28,20 @@ class Solution:
             return res
         
         return robHelper(nums)
+
+class SolutionBottomUp:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        elif len(nums) == 1:
+            return nums[0]
+        elif len(nums) == 2:
+            return max(nums[0], nums[1])
+        
+        two_before, one_before = nums[0], max(nums[0], nums[1])
+        for i in range(2, len(nums)):
+            curr = max(two_before + nums[i], one_before)
+            two_before = one_before
+            one_before = curr
+        
+        return curr

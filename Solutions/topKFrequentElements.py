@@ -1,6 +1,16 @@
 from collections import defaultdict
 from functools import cmp_to_key
 import heapq
+from collections import Counter
+
+class SolutionNaive: # O(nlogn)
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count = Counter(nums)
+        unique_nums = list(count.keys())
+
+        unique_nums.sort(key=lambda x : count[x])
+        n = len(unique_nums)
+        return unique_nums[n-k:]
 
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
@@ -29,34 +39,27 @@ class Solution:
             res.append(item[1])
         return res
 
-from collections import defaultdict
-import heapq
-
-class SolutionHeap: # O(nlogk)
+class SolutionHeap:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        counter = Counter(nums) # O(n) 
+        # Can get down to O(nlogk) complexity by limiting the size of the heap
 
-        countDict = defaultdict(int)
-        for num in nums: #O(n)
-            countDict[num] += 1
-        
-        pq = [] # Min Heap of frequencies of size k
-        for num in countDict.keys(): # O(nlogk)
-            if len(pq) >= k: # Drop the least frequent element if heap gets too big
-                leastElementInPq = heapq.heappop(pq)
-                if countDict[num] > leastElementInPq[0]:
-                    heapq.heappush(pq, (countDict[num], num))
-                else:
-                    heapq.heappush(pq, leastElementInPq)
+        frequency_heap = [] # Min-heap Maximum size of k, lowest of top-k frequencies on top
+        for num in counter.keys(): # O(nlogk)
+            if len(frequency_heap) < k:
+                heapq.heappush(frequency_heap, (counter[num], num))
             else:
-                heapq.heappush(pq, (countDict[num], num))
+                top_of_heap = frequency_heap[0]
+                if top_of_heap[0] < counter[num]:
+                    heapq.heappop(frequency_heap)
+                    heapq.heappush(frequency_heap, (counter[num], num))
         
         res = []
-        for i in range(k): # O(k)
-            item = heapq.heappop(pq)
-            res.append(item[1])
+        for elem in frequency_heap:
+            res.append(elem[1])
         return res
 
-class SolutionOptimal: # Uses QuickSelect k times
+class SolutionOptimal: # Uses QuickSelect k times O(nk) since QuickSelect is O(N) average case O(N^2) worst-case
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
 
         def quickSelect(l, r):

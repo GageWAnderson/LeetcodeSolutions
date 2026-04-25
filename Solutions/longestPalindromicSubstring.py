@@ -1,49 +1,30 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        n = len(s)
-        if n == 0:
-            return ""
-        elif n == 1:
-            return s
+        longest_palindrome = ""
 
-        maxLen = 1
-        maxLenIndicies = (0,0)
-
-        for i in range(n):
-            # Check the odd and even length palindromes
-
-            # Odd palindromes first
-            l,r = i-1,i+1
-            currLen = 1
-            currIndicies = (l, r)
-            while l >= 0 and r < n:
-                if s[l] == s[r]:
-                    currLen += 2
-                    currIndicies = (l,r)
-                    l -= 1
-                    r += 1
+        for i in range(len(s)):
+            left,right = i - 1, i + 1
+            odd_palindrome_length = 1
+            while left >= 0 and right < len(s):
+                if s[left] == s[right]:
+                    odd_palindrome_length += 2
+                    left -= 1
+                    right += 1
                 else:
                     break
-            
-            if currLen > maxLen:
-                maxLen = currLen
-                maxLenIndicies = (currIndicies[0], currIndicies[1]) 
+            if odd_palindrome_length > len(longest_palindrome):
+                longest_palindrome = s[left+1:right]
 
-            currLen = 0
-            l,r = i,i+1
-            currIndicies = (l, r)
-            # Check even palindrome
-            while l >= 0 and r < n:
-                if s[l] == s[r]:
-                    currLen += 2
-                    currIndicies = (l, r)
-                    l -= 1
-                    r += 1
+            left,right = i, i + 1
+            even_palindrome_length = 0
+            while left >= 0 and right < len(s):
+                if s[left] == s[right]:
+                    even_palindrome_length += 2
+                    left -= 1
+                    right += 1
                 else:
                     break
-
-            if currLen > maxLen:
-               maxLen = currLen
-               maxLenIndicies = (currIndicies[0], currIndicies[1]) 
+            if even_palindrome_length > len(longest_palindrome):
+                longest_palindrome = s[left+1:right]
         
-        return s[maxLenIndicies[0]:maxLenIndicies[1] + 1]
+        return longest_palindrome # O(N^2) time, O(1) space

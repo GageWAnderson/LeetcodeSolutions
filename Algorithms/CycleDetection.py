@@ -9,7 +9,7 @@ class DetectCycle: #O(V) Time and space complexity
             seen[start] = True
             for nbor in graph[start]:
                 if not parent or (nbor != parent and seen[nbor] == False):
-                    if dfs(nbor,start):
+                    if _dfs(nbor,start):
                         return True
                 elif nbor != parent and nbor in seen:
                     return True
@@ -18,6 +18,7 @@ class DetectCycle: #O(V) Time and space complexity
         return _dfs(graph[0],None)
 
     #For connected components, detect cycles by finding back-edges.
+    # More complex for directed graphs, as we need to keep track of all the parents
     def detectCycleDirected(self,graph):
         seen = {v:False for v in graph}
         rec_stack = {v:False for v in graph}

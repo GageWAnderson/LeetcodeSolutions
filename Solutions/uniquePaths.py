@@ -17,3 +17,19 @@ class Solution:
         
         print(dp)
         return dp[0][-1]
+
+import copy
+class SolutionMemoryOptimized:
+    def uniquePaths(self, m: int, n: int) -> int:
+        # Set m to be smaller than n
+        if m > n:
+            m,n = n,m
+
+        prev_row = [1 for col in range(m)] # O(min(m,n)) memory
+        curr_row = [1 if col == 0 else 0 for col in range(m)]
+        for row in range(1, n):
+            for col in range(1, m):
+                curr_row[col] = curr_row[col - 1] + prev_row[col]
+            prev_row = copy.deepcopy(curr_row)
+            curr_row[0] = 1
+        return curr_row[-1]

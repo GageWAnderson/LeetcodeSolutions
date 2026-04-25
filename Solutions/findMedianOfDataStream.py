@@ -50,3 +50,39 @@ class MedianFinder:
 # obj = MedianFinder()
 # obj.addNum(num)
 # param_2 = obj.findMedian()
+
+import heapq # Default Python heapq heap is a MIN-HEAP
+class MedianFinderOptimal:
+    """
+    Use -1 * val to implement a MAX-HEAP quickly in Python
+    """
+    def __init__(self):
+        self.smaller_half_heap = []
+        self.larger_half_heap = []
+
+    def addNum(self, num: int) -> None:
+        # Add to the smaller heap
+        heapq.heappush(self.smaller_half_heap, -1 * num)
+
+        # Balance the sizes of the 2 heaps
+        if len(self.smaller_half_heap) > len(self.larger_half_heap) + 1:
+            val_to_move = -1 * heapq.heappop(self.smaller_half_heap)
+            heapq.heappush(self.larger_half_heap, val_to_move)
+        
+        # Make sure the elements in the small heap are less than the large heap (rebalance)
+        if self.smaller_half_heap and self.larger_half_heap:
+            if -1 * self.smaller_half_heap[0] > self.larger_half_heap[0]:
+                val1, val2 = -1 * heapq.heappop(self.smaller_half_heap), heapq.heappop(self.larger_half_heap)
+                heapq.heappush(self.larger_half_heap, val1)
+                heapq.heappush(self.smaller_half_heap, -1 * val2)
+
+    def findMedian(self) -> float:
+        if (len(self.smaller_half_heap) + len(self.larger_half_heap)) % 2 == 0:
+            return ((-1 * self.smaller_half_heap[0]) + self.larger_half_heap[0]) / 2
+        else:
+            return -1 * self.smaller_half_heap[0]
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()

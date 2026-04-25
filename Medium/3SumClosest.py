@@ -23,20 +23,30 @@ class Solution:
         return res
 
 class SolutionBest:
-    #Use two-pointers method with sorting, can get O(n^2)
+    # Use two-pointers method with sorting, can get O(n^2) time complexity
     def threeSumClosest(self, nums: List[int], target: int) -> int:
-        diff = float('inf')
-        nums.sort() #Most important line!
+        diff = float('inf')  # Initialize difference to infinity
+        nums.sort()  # Sort the array to enable two-pointer approach
+        
         for i in range(len(nums)):
-            lo, hi = i + 1, len(nums) - 1
-            while (lo < hi):
-                sum = nums[i] + nums[lo] + nums[hi]
+            lo, hi = i + 1, len(nums) - 1  # Initialize two pointers
+            
+            while lo < hi:
+                sum = nums[i] + nums[lo] + nums[hi]  # Calculate current sum
+                
+                # Update diff if current sum is closer to target
                 if abs(target - sum) < abs(diff):
                     diff = target - sum
+                
+                # Move pointers based on sum comparison with target
                 if sum < target:
-                    lo += 1
+                    lo += 1  # Increase sum by moving left pointer right
                 else:
-                    hi -= 1
+                    hi -= 1  # Decrease sum by moving right pointer left
+            
+            # If exact match found, no need to continue
             if diff == 0:
                 break
-        return target - diff
+        
+        return target - diff  # Return the closest sum
+
