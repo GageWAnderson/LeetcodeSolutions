@@ -1,18 +1,26 @@
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        n = len(temperatures)
-        answer = [0] * n
-        stack = []
+        # NOTE: Sorting doesn't work since that will corrupt the data
+        # That rules out binary search and most likely a two pointers approach
+        # NOTE: Brute force is very easy, but how do we do better than O(n^2)?
 
-        for curr_day, curr_temp in enumerate(temperatures):
-            # Pop until the current day's temperature is not
-            # warmer than the temperature at the top of the stack
-            while stack and temperatures[stack[-1]] < curr_temp:
-                prev_day = stack.pop()
-                answer[prev_day] = curr_day - prev_day
-            stack.append(curr_day)
+        # How do we "know" what the warmest days are ahead without linear/binary search?
+        # Can we use some type of data structure to track this?
+        # How do we track an ordered set of all the temperatures ahead of each point?
+        # My first thought is a heap, since the heap invariant will keep all the warmer temps on top
+        # However, push/pop from the heap is O(logn), can we do better?
+        # Heap wouldn't work since I need to search for both index and temperature?
+        # "Give me the closest index to the right where the temperature greater than the current day"
+        ans = [0 for _ in range(len(temperatures))]
 
-        return answer
+        stack: List[Tuple[int, int]] = []  # Monotonic increasing top-to-bottom
+
+        for i in range(len(temperatures)):
+            while stack and stack[-1][1] < temperatures[i]:
+                ans[stack[-1][0]] = i - stack[-1][0]
+                stack.pop()
+            stack.append((i, temperatures[i]))
+        return ans
 
 
 class SolutionIncorrect:
